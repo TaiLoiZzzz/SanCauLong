@@ -1,0 +1,40 @@
+### Cấu hình biến môi trường cục bộ
+@baseUrl = http://localhost:3004/api/auth
+
+############################################################
+# 1. ĐĂNG KÝ TÀI KHOẢN MỚI (REGISTER)
+############################################################
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "email": "useer1@test.com",
+    "password": "password123",
+    "fullName": "Nguyen Van A",
+    "phone": "0901234567"
+}
+
+###
+
+############################################################
+# 2. ĐĂNG NHẬP (LOGIN)
+############################################################
+# @name loginRequest
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "email": "admin@sancaulong.com",
+    "password": "admin123"
+}
+
+###
+
+############################################################
+# 3. LẤY TOKEN TỪ KẾT QUẢ LOGIN (Dùng cho các API sau này)
+############################################################
+@authToken = {{loginRequest.response.body.token}}
+
+### TEST THỬ LẤY THÔNG TIN (Ví dụ một route cần bảo mật)
+GET http://localhost:3000/api/users/profile
+Authorization: Bearer {{authToken}}
