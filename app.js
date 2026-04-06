@@ -7,6 +7,7 @@ const swaggerSpec = require("./src/config/swagger");
 
 const errorHandler = require("./src/middleware/errorHandler");
 const authRoutes = require('./src/modules/auth/auth.routes');
+const centerRoutes = require('./src/modules/center/center.routes')
 const app = express();
 
 // middleware
@@ -19,7 +20,8 @@ app.use(morgan("dev"));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // routes
-app.use('/api/auth', authRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/centers',centerRoutes)
 
 // 404 handler
 app.use((req, res, next) => {

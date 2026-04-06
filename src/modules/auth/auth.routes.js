@@ -11,7 +11,31 @@ const authController = require('./auth.controller');
 
 /**
  * @swagger
- * /api/auth/register:
+ * components:
+ *   schemas:
+ *     UserResponse:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           format: uuid
+ *         email:
+ *           type: string
+ *         fullName:
+ *           type: string
+ *         role:
+ *           type: string
+ *           enum: [USER, ADMIN, STAFF]
+ *     ErrorResponse:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ */
+
+/**
+ * @swagger
+ * /auth/register:
  *   post:
  *     summary: Đăng ký tài khoản mới
  *     tags: [Auth]
@@ -33,6 +57,7 @@ const authController = require('./auth.controller');
  *                 example: user@test.com
  *               password:
  *                 type: string
+ *                 minLength: 6
  *                 example: password123
  *               fullName:
  *                 type: string
@@ -50,25 +75,21 @@ const authController = require('./auth.controller');
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Đăng ký thành công!
  *                 user:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: string
- *                     email:
- *                       type: string
- *                     fullName:
- *                       type: string
- *                     role:
- *                       type: string
+ *                   $ref: '#/components/schemas/UserResponse'
  *       401:
  *         description: Email đã được đăng ký
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.post('/register', authController.register);
 
 /**
  * @swagger
- * /api/auth/login:
+ * /auth/login:
  *   post:
  *     summary: Đăng nhập
  *     tags: [Auth]
@@ -100,23 +121,24 @@ router.post('/register', authController.register);
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Đăng nhập thành công!
  *                 token:
  *                   type: string
+ *                   description: JWT token
  *                 user:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: string
- *                     email:
- *                       type: string
- *                     fullName:
- *                       type: string
- *                     role:
- *                       type: string
+ *                   $ref: '#/components/schemas/UserResponse'
  *       400:
  *         description: Sai email hoặc mật khẩu
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       401:
- *         description: Chưa đăng ký
+ *         description: Email chưa đăng ký
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.post('/login', authController.login);
 

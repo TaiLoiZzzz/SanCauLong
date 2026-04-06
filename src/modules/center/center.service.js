@@ -72,6 +72,7 @@ class CenterService {
     const result = await db.raw(
       `SELECT * FROM "CourtCenter" ORDER BY updated_at DESC;`
     );
+    console.log(result.rows )
     return result.rows;
   };
 

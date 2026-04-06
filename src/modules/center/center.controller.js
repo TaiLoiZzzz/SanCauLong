@@ -1,23 +1,24 @@
 const centerService = require('./center.service');
 
-const getCenters = async (req, res, next) => {
-  try {
-    const data = await centerService.getAllCenters();
-    res.status(200).json({ success: true, data });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const getCourts = async (req, res, next) => {
-  try {
-    const { centerId } = req.params;
-    const data = await centerService.getCourtsByCenter(centerId);
-    res.status(200).json({ success: true, data });
-  } catch (error) {
-    next(error);
-  }
-};
+const getCenters = async (req, res, next ) =>{
+    try{
+        const result = await centerService.getAllCenter()
+        console.log(result)
+        res.status(200).json({
+            success: true, result
+        }) 
+    }catch(err){
+        next(err)
+    }
+}
+const getCourts = async (req, res, next) =>{
+    try{
+        const { centerId } = req.params;
+        const data = await centerService.getCourtByCenterId(centerId)
+        res.status(200).json({success:true, data})
+    }catch(err){
+    next(err)}
+}
 
 const postCenter = async (req, res, next) => {
   try {
